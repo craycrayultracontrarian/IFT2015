@@ -9,11 +9,7 @@ public class PathFinder {
 
     public void run(String[] fileNames) throws IOException {
         infoFileName = fileNames[0];
-
-        // If provided, store name of file to output to
-        if (fileNames.length == 2) {
-            resultFileName = fileNames[1];
-        }
+        resultFileName = fileNames[1];
 
         // Get max load of truck, number of boxes to collect and store in maxLoad
         // and boxesToCollect respectively
@@ -29,11 +25,7 @@ public class PathFinder {
         selectionSort(warehouses);
 
         ArrayList<Warehouse> visited = collectBoxes(warehouses);
-
-        // Check whether or not to write output to a file
-        if (resultFileName != null) {
-            writeResult(visited, resultFileName);
-        }
+        writeResult(visited, resultFileName);
     }
 
     private void getTruckInfoFromFile(String filename) throws IOException {
