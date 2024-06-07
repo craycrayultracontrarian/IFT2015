@@ -7,6 +7,7 @@ public class PathFinder {
     double[] startCoords;
     ArrayList<Warehouse> warehouses = new ArrayList<>();
 
+    // this function runs in O(n) time because of the for loop
     public void run(String[] fileNames) throws IOException {
         infoFileName = fileNames[0];
         resultFileName = fileNames[1];
@@ -17,7 +18,7 @@ public class PathFinder {
         startCoords = getWarehousesFromFile(infoFileName);
 
         // Calculate distance between the truck and each warehouse
-        for (Warehouse w : warehouses) {
+        for (Warehouse w : warehouses) {   // O(n)
             w.setDistToStart(startCoords);
         }
 
@@ -28,6 +29,7 @@ public class PathFinder {
         writeResult(visited, resultFileName);
     }
 
+    // This function runs in O(1) time
     private void getTruckInfoFromFile(String filename) throws IOException {
         FileReader fr = new FileReader(filename);
         BufferedReader br = new BufferedReader(fr);
@@ -39,7 +41,7 @@ public class PathFinder {
     }
 
     // Parse file for info of warehouses and return coordinates of warehouse
-    // with the greatest number of boxes
+    // with the greatest number of boxes. It runs in O(n) time
     private double[] getWarehousesFromFile(String filename) throws IOException {
         FileReader fr = new FileReader(filename);
         BufferedReader br = new BufferedReader(fr);
@@ -53,6 +55,8 @@ public class PathFinder {
 
         // Iterate through all lines in file to get info of each warehouse
         String line = br.readLine();
+
+        // The while and for loops together in O(n) time
         while (line != null) {
             String[] splitLine = line.split(" ");
 
@@ -78,6 +82,7 @@ public class PathFinder {
         return startCoords;
     }
 
+    // This function runs in O(1) time
     private double[] getCoordsFromString(String coordsString) {
         // Clean the string to remove all parentheses { "(", ")" } and spaces { " " }
         String cleanCoordsString = coordsString.replace("(", "").replace(")", "").replace(" ", "");
@@ -86,16 +91,18 @@ public class PathFinder {
         return new double[] {Double.parseDouble(splitCoords[0]), Double.parseDouble(splitCoords[1])};
     }
 
+    // This function runs in O(n^2) time because of the nested for loop inside the other for loop
     private void selectionSort(ArrayList<Warehouse> warehouses) {
         int startIndex, minIndex;
         double minDist;
         int warehouseSize = warehouses.size();
 
-        for (int i = 0; i < warehouseSize; i++) {
+        //The two for loops run together in a O(n^2) time because of O(n)*O(n)
+        for (int i = 0; i < warehouseSize; i++) {    // O(n)
             startIndex = minIndex = i;
             minDist = warehouses.get(i).getDistToStart();
 
-            for (int j = startIndex + 1; j < warehouseSize; j++) {
+            for (int j = startIndex + 1; j < warehouseSize; j++) {  // O(n)
                 double distance = warehouses.get(j).getDistToStart();
 
                 if (distance < minDist) {
@@ -110,13 +117,14 @@ public class PathFinder {
         }
     }
 
+    // Runs in O(n) time
     private ArrayList<Warehouse> collectBoxes(ArrayList<Warehouse> warehouses) {
         int i = 0;
         ArrayList<Warehouse> visited = new ArrayList<>();
 
         // Iterate through the sorted list of warehouses and storing each visited
         // in an array until the required number of boxes have been collected
-        while (boxesToCollect != 0 && i < warehouses.size()) {
+        while (boxesToCollect != 0 && i < warehouses.size()) {  // O(n)
             Warehouse warehouse = warehouses.get(i);
             int boxesInWarehouse = warehouse.getBoxes();
 
@@ -136,6 +144,7 @@ public class PathFinder {
         return visited;
     }
 
+    //Runs in O(n) time because of the for loop
     private void writeResult(ArrayList<Warehouse> visited, String resultFileName) throws IOException {
         File resultFile = new File(resultFileName);
 
@@ -147,7 +156,7 @@ public class PathFinder {
 
         fileWriter.write("Truck position: (" + startCoords[0] + ',' + startCoords[1] + ")\n");
 
-        for (int i = 0; i < visited.size(); i++) {
+        for (int i = 0; i < visited.size(); i++) {    // O(n)
             Warehouse w = visited.get(i);
 
             if (i == 0) {
