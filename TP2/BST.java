@@ -23,14 +23,14 @@ public class BST {
 
         // For main tree
         int value;
-        NewBST subtree;
+        BST subtree;
 
         // For sub-tree
         int quantity;
         LocalDate expirationDate;
 
         // Constructor for main tree node
-        public Node(int value, NewBST subtree) {
+        public Node(int value, BST subtree) {
             this.value = value;
             this.subtree = subtree;
         }
@@ -113,7 +113,7 @@ public class BST {
     }
 
     // For main tree
-    private Node unbalancedInsert(int value, NewBST subtree, Node node) {
+    private Node unbalancedInsert(int value, BST subtree, Node node) {
         if (node == null) {
             node = new Node(value, subtree);
         } else if (value < node.value) {
@@ -140,12 +140,12 @@ public class BST {
         return node;
     }
 
-    public void insert(int value, NewBST subtree) {
+    public void insert(int value, BST subtree) {
         root = insert(value, subtree, root);
     }
 
     // Insertion in main tree (!!!make sure the value isn't already in the tree!!!!)
-    public Node insert(int value, NewBST subtree, Node node) {
+    public Node insert(int value, BST subtree, Node node) {
         node = unbalancedInsert(value, subtree, node);
 
         updateHeight(node);
