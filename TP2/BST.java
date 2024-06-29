@@ -2,14 +2,14 @@ import java.time.LocalDate;
 
 import static java.lang.Math.max;
 
-public class NewBST {
+public class BST {
     private Node root;
 
-    public NewBST() {
+    public BST() {
 
     }
 
-    public NewBST(int quantity, LocalDate expirationDate) {
+    public BST(int quantity, LocalDate expirationDate) {
         root = new Node(quantity, expirationDate);
     }
 
@@ -42,10 +42,12 @@ public class NewBST {
         }
     }
 
+    // Get height of node
     private int height(Node node) {
         return node != null ? node.height : -1;
     }
 
+    // Update the height of 
     private void updateHeight(Node node) {
         int leftChildHeight = height(node.left);
         int rightChildHeight = height(node.right);
