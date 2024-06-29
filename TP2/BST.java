@@ -287,7 +287,31 @@ public class NewBST {
         return node;
     }
 
-    public void printTreeInOrder(Node node) {
+    public Node search (int value) {
+        return search(value, root);
+    }
+
+    public Node search(int value, Node node) {
+        if (node == null) {
+            return null;
+        }
+
+        if (value < node.value) {
+            search(value, node.left);
+        } else if (value > node.value) {
+            search(value, node.right);
+        } else {
+            return node;
+        }
+
+        return null;
+    }
+
+    public void printTreeInOrder() {
+        printTreeInOrder(root);
+    }
+
+    private void printTreeInOrder(Node node) {
         if (node == null) {
             return;
         }
