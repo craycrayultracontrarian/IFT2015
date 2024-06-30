@@ -1,3 +1,4 @@
+package TP2;
 import java.time.LocalDate;
 
 import static java.lang.Math.max;
@@ -330,7 +331,37 @@ public class BST {
 
         printTreeInOrder(node.right);
 
+    
 
+    }
+
+    public static void main (String[] args) {
+    // check if the line has stuff written down in it
+
+    // if not, stop (base case and loop-breaker)
+
+    // if it does;
+    // Node search = BST.search(medicine #)
+    // if Node search == null
+        // insert a new node with the medicine #
+        // insert a new subtree node with the expiry date and qty
+    
+    // else, 
+        // search subtree for expiry date
+        // Node search2 = search.searchSubtree(expiry date)
+        // if Node search2 == null
+            // insert a new node with the expiry date and qty (the AVL will auto-sort it)
+        // else
+            // Node search2.increaseQty()
+    
+    // skip to next line
+
+
+    System.out.println("APPROV OK");
 
     }
 }
+
+// basically, this sets all the rules for interacting with our data.
+// the approv function will then allow us to fill the BST we've defined here.
+
