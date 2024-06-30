@@ -1,6 +1,8 @@
 package TP2;
 import java.io.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+
 import static java.lang.Math.max;
 
 public class TP2 {
@@ -17,34 +19,58 @@ public class TP2 {
     }
 
     public void main() throws IOException {
+        boolean processingAPPROV = false;
+        boolean processingPRESCRIPTION = false;
         // Reading the file
         while((lineToRead = br.readLine()) != null) {
+            if (lineToRead.endsWith(";")) {
+                processingAPPROV = false; // Reset flag when ';' is encountered
+                processingPRESCRIPTION = false;
+            }
             // Checking for all the keywords
+            if (processingAPPROV) {
+                if (lineToRead.contains(";")){
+                    bw.write("APPROV OK" + "\n");
+                }
+                // Process lines under "APPROV" condition
+                String[] splitLine = lineToRead.split("[ \t]+");
+                int value = Integer.parseInt((splitLine[0]).substring(11)); //get int
+                BST subTree = bstInstance;
+                BST.Node node = bstInstance.search(value);
+                int quantity = Integer.parseInt(splitLine[1]);
+                LocalDate expirationDate = LocalDate.parse(splitLine[2]);
+                restock (value, subTree, node, quantity, expirationDate);
+                continue; // Skip to the next iteration to avoid processing other keywords
+            }
+    
+            if (lineToRead.contains("APPROV")) {
+                processingAPPROV = true; // Set flag to start special processing on subsequent lines
+                continue; // Skip to the next iteration to immediately start processing under "APPROV"
+            }
+
+            if (processingPRESCRIPTION) {
+                // Process lines under "APPROV" condition
+                bw.write("PRESCRIPTION" + " " + counter + "\n");
+                counter ++;
+                continue; // Skip to the next iteration to avoid processing other keywords
+            }
+            if (lineToRead.contains("PRESCRIPTION")) {
+                processingPRESCRIPTION = true;
+                continue; 
+            }
+            if (lineToRead.contains("STOCK")) {
+                
+                // no break needed here either
+            }
             if (lineToRead.contains("DATE")) {
                 String date = lineToRead.split(" ")[1]; //getting raw date
                 vali_date(date); //calling the date function
                 String vali_date = vali_date(date); //storing the response
                 bw.write("DATE" + " " + date + vali_date + "\n"); //writing 
             }
-            if (lineToRead.contains("APPROV")) {
-                
-            }
-            if (lineToRead.contains("STOCK")) {
-                
-            }
-            
-            if (lineToRead.contains("PRESCRIPTION")) {
-                bw.write("PRESCRIPTION" + " " + counter + "\n");
-                counter ++;
-            }
-            bw.close();
         }
+        bw.close();
     }
-
-
-// get date function will parse the date we recieve in the txt and save as cur
-// we will then use a comparator to delete all nodes with exp dates before cur
-// Ainsi, vous devez gérer le nombre de jours par mois et les années bissextiles.
 
     public String vali_date(String date) {
         if (LocalDate.parse(date)==null){
@@ -60,6 +86,148 @@ public class TP2 {
         LocalDate curDate= LocalDate.parse(date);
         bstInstance.removeBeforeExp(curDate);
         // write the current commandes array (not yet implemented)
+    }
+
+    public void restock(int value, BST subTree, BST.Node node, int quantity, LocalDate expirationDate) {
+        if (bstInstance.search(value) == null) {
+            bstInstance.insert(value, subTree, node);
+            bstInstance.insert(quantity, expirationDate, node);
+        } else {
+            bstInstance.insert(quantity, expirationDate, node);    
+        }
+    }
+
+    
+
+
+
+
+
+
+    //from here on below in the TP2 class, I did not refactor / modify the code
+
+    
+
+
+
+
+
+
+
+    class Commande {
+        String name;
+        int amount;
+    
+        // Constructor
+        Commande(String name, int amount){
+            this.name = name;
+            this.amount  = amount;
+        }
+    
+        public String getName(){
+            return  name;
+        }
+        public int getAmount(){
+            return amount;
+        }
+    }
+
+    class Prescription {
+    // these may not be necessary anymore since I implemented the 
+    // buffer writer in the main class, as well as the BST instance
+    private final BufferedWriter bw;
+    private final BufferedReader br;
+    BST BSTStock =  new BST();
+    int counter = 1;
+    String lineToRead;
+
+    // Constructor
+    public Prescription(String inputFile, String outputFile) throws IOException {
+        FileWriter fw = new FileWriter(outputFile);
+        bw = new BufferedWriter(fw);
+        br = new BufferedReader(new FileReader(inputFile));
+    }
+
+    public void prescriptionName() throws IOException {
+        while((lineToRead = br.readLine()) != null) {
+            if (lineToRead.contains("PRESCRIPTION")) {
+                bw.write("PRESCRIPTION" + " " + counter + "\n");
+                counter ++;
+                bw.close();
+            }
+        }
+    }
+
+    public void stockChecker() throws IOException {
+            ArrayList <Commande> orders = new ArrayList<>();
+
+            // Split on empty spaces or tabs
+            String[] sections = lineToRead.split("[ \t]+");
+
+            String name = sections[0]; // Medicines' names
+
+            int dose = Integer.parseInt(sections[1]);
+            int repetition = Integer.parseInt(sections[2]);
+            int qtyNeeded = dose * repetition;
+
+            Commande commande = new Commande(name, qtyNeeded);
+        }
+    }
+
+    class WriteStock {
+        public static void writeStock(BST medStock, String outputFileName, LocalDate currDate) throws IOException {
+            FileWriter fw = new FileWriter(outputFileName);
+    
+            fw.write("Stock " + currDate + '\n');
+    
+        // Create array to store all nodes in the main tree
+            ArrayList<BST.Node> mainNodes = getMainTreeNodes(medStock.getRoot());
+    
+        // For each node in the main tree, go through it's subtree and write the name
+        // of the medication, stock and expiration date
+        // Format: [Name] [Amount in stock] [Expiration date]
+            for (BST.Node node : mainNodes) {
+                writeSubTree(fw, node.value, node.subtree.getRoot());
+            }
+    
+            fw.close();
+        }
+    
+        // Return an ArrayList with all nodes in order in tree with given root 
+        private static ArrayList<BST.Node> getAllNodes(BST.Node node) throws IOException {
+            ArrayList<BST.Node> nodes = new ArrayList<>();
+            getMainTreeNodes(nodes, node);
+            return nodes;
+    
+        }
+    
+        // Used by primary method to get all nodes recursively in order
+        private static void getMainTreeNodes(ArrayList<BST.Node> mainNodes, BST.Node node) throws IOException {
+            if (node == null) {
+                return;
+            }
+            getMainTreeNodes(mainNodes, node.left);
+    
+            mainNodes.add(node);
+    
+            getMainTreeNodes(mainNodes, node.right);
+        }
+    
+        // Write each batch of a medication with differents amounts in stock and expiration dates line by line
+        // recurseively in order 
+        private static void writeSubTree(FileWriter fw, int medNumber, BST.Node node) throws IOException {
+            if (node == null) {
+                return;
+            }
+    
+            writeSubTree(fw, medNumber, node.left);
+    
+        // Write information, format: [Name] [Amount in stock] [Expiration date]
+            fw.write("Médicament" + medNumber + " " + node.quantity + " " + node.expirationDate + '\n');
+    
+            writeSubTree(fw, medNumber, node.right);
+    
+        }
     }
 }
 
@@ -355,7 +523,7 @@ class BST {
         return search(value, root);
     }
 
-    public Node search(int value, Node node) {
+    private Node search(int value, Node node) {
         if (node == null) {
             return null;
         }
