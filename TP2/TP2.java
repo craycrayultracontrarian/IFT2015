@@ -1,9 +1,70 @@
 package TP2;
+import java.io.*;
 import java.time.LocalDate;
-
 import static java.lang.Math.max;
 
-public class BST {
+public class TP2 {
+    private final BufferedWriter bw;
+    private final BufferedReader br;
+    int counter = 1;
+    String lineToRead;
+    BST bstInstance = new BST();
+
+    // Constructor
+    public TP2(String inputFile, String outputFile) throws IOException {
+        bw = new BufferedWriter(new FileWriter(outputFile));
+        br = new BufferedReader(new FileReader(inputFile));
+    }
+
+    public void main() throws IOException {
+        // Reading the file
+        while((lineToRead = br.readLine()) != null) {
+            // Checking for all the keywords
+            if (lineToRead.contains("DATE")) {
+                String date = lineToRead.split(" ")[1]; //getting raw date
+                vali_date(date); //calling the date function
+                String vali_date = vali_date(date); //storing the response
+                bw.write("DATE" + " " + date + vali_date + "\n"); //writing 
+            }
+            if (lineToRead.contains("APPROV")) {
+                
+            }
+            if (lineToRead.contains("STOCK")) {
+                
+            }
+            
+            if (lineToRead.contains("PRESCRIPTION")) {
+                bw.write("PRESCRIPTION" + " " + counter + "\n");
+                counter ++;
+            }
+            bw.close();
+        }
+    }
+
+
+// get date function will parse the date we recieve in the txt and save as cur
+// we will then use a comparator to delete all nodes with exp dates before cur
+// Ainsi, vous devez gérer le nombre de jours par mois et les années bissextiles.
+
+    public String vali_date(String date) {
+        if (LocalDate.parse(date)==null){
+           return "INVALIDE";
+        } else {
+            up_date(date);
+            return "OK";
+        }
+    }
+
+    public void up_date(String date) {
+        vali_date(date);
+        LocalDate curDate= LocalDate.parse(date);
+        bstInstance.removeBeforeExp(curDate);
+        // write the current commandes array (not yet implemented)
+    }
+}
+
+
+class BST {
     private Node root;
 
     public BST() {
@@ -330,39 +391,32 @@ public class BST {
         }
 
         printTreeInOrder(node.right);
-
-    
-
     }
-
-    public static void main (String[] args) {
-    // check if the line has stuff written down in it
-    
-    // if not, stop (base case and loop-breaker)
-
-    // if it does;
-    // Node search = BST.search(medicine #)
-    // if Node search == null
-        // insert a new node with the medicine #
-        // insert a new subtree node with the expiry date and qty
-    
-    // else, 
-        // search subtree for expiry date
-        // Node search2 = search.searchSubtree(expiry date)
-        // if Node search2 == null
-            // insert a new node with the expiry date and qty (the AVL will auto-sort it)
-        // else
-            // Node search2.increaseQty()
-    
-    // skip to next line
-
-
-    System.out.println("APPROV OK");
-
+    // remove before Exp function to be used during date validation function
+    public void removeBeforeExp(LocalDate date) {
+        root = removeBeforeExp(root, date);
     }
-
-
-// basically, this sets all the rules for interacting with our data.
-// the approv function will then allow us to fill the BST we've defined here.
-
+    
+    private Node removeBeforeExp(Node node, LocalDate date) {
+        if (node == null) {
+            return null;
+        }
+    
+        node.left = removeBeforeExp(node.left, date);
+        node.right = removeBeforeExp(node.right, date);
+    
+        if (node.expirationDate != null && node.expirationDate.isBefore(date)) {
+            if (node.left == null) {
+                return node.right;
+            } else if (node.right == null) {
+                return node.left;
+            } else {
+                Node temp = findMinimum(node.right);
+                node.expirationDate = temp.expirationDate;
+                node.quantity = temp.quantity;
+                node.right = removeBeforeExp(node.right, node.expirationDate);
+            }
+        }
+        return node;
+    }
 }
