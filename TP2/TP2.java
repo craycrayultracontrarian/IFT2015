@@ -1,4 +1,3 @@
-package TP2;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,6 +10,8 @@ public class TP2 {
     int counter = 1;
     String lineToRead;
     BST bstInstance = new BST();
+    LocalDate curDate;
+    LocalDate expDateNeeded;
 
     // Constructor
     public TP2(String inputFile, String outputFile) throws IOException {
@@ -49,8 +50,30 @@ public class TP2 {
             }
 
             if (processingPRESCRIPTION) {
-                // Process lines under "APPROV" condition
                 bw.write("PRESCRIPTION" + " " + counter + "\n");
+                String[] splitLine = lineToRead.split("[ \t]+");
+                int value = Integer.parseInt((splitLine[0]).substring(11)); //get int
+                int quantity = Integer.parseInt(splitLine[1]);
+                int cycles = Integer.parseInt(splitLine[2]);
+                int total = quantity * cycles;
+                expDateNeeded = curDate.plusDays(total);
+                //check if the medication exists in the stock
+                if (bstInstance.search(value) == null) {
+                    bw.write(splitLine + "COMMANDE" + "\n");
+                    continue;
+                }
+                else if (bstInstance.search(value).experiationDate < expDateNeeded) {
+                    // if the exp dates available, in the quantity available are before the needed date, write commande
+                    bw.write(splitLine + "COMMANDE" + "\n");
+                    continue;
+                }
+                else {
+                    bstInstance.remove(value, quantity, expDateNeeded);
+                    bw.write(splitLine + "OK" + "\n");
+                }
+                // check if the exp date is all good
+                // if yes, write that its OK and remove from the stock
+                // if no, write "commande" and add to commande array
                 counter ++;
                 continue; // Skip to the next iteration to avoid processing other keywords
             }
@@ -59,14 +82,17 @@ public class TP2 {
                 continue; 
             }
             if (lineToRead.contains("STOCK")) {
-                
-                // no break needed here either
+                bw.write("Stock " + curDate + '\n');
+                bstInstance.printTreeInOrder();
             }
             if (lineToRead.contains("DATE")) {
                 String date = lineToRead.split(" ")[1]; //getting raw date
                 vali_date(date); //calling the date function
                 String vali_date = vali_date(date); //storing the response
+                curDate = LocalDate.parse(date); //parsing the date
                 bw.write("DATE" + " " + date + vali_date + "\n"); //writing 
+                // write the next day's commande array, if application
+                // if the array size is > 0, print "commandes" + curDate.plusDays(1) + array (line break after each)
             }
         }
         bw.close();
@@ -100,17 +126,9 @@ public class TP2 {
     
 
 
-
-
-
-
     //from here on below in the TP2 class, I did not refactor / modify the code
 
     
-
-
-
-
 
 
 

@@ -1,4 +1,3 @@
-package TP2;
 import java.time.LocalDate;
 
 import static java.lang.Math.max;
