@@ -1,0 +1,131 @@
+2013-08-27 OK
+
+APPROV OK
+STOCK 2013-08-27
+Médicament9 59 2018-08-07
+Médicament10 66 2017-03-23
+Médicament11 17 2018-07-25
+Médicament12 50 2015-09-09
+Médicament15 119 2014-02-26
+Médicament19 99 2019-03-31
+Médicament20 48 2016-11-17
+Médicament34 111 2017-09-04
+Médicament38 21 2015-05-15
+Médicament48 16 2014-06-03
+Médicament49 88 2013-09-01
+
+PRESCRIPTION 1
+Medicament1    5       6  COMMANDE
+Medicament9    30      6  COMMANDE
+Medicament3    5       1  COMMANDE
+
+PRESCRIPTION 2
+Medicament1    14       2 COMMANDE
+Medicament9    4       1 OK
+Medicament2    4       1 COMMANDE
+
+PRESCRIPTION 3
+Medicament3    2       1 COMMANDE
+
+PRESCRIPTION 4
+Medicament8    4       1 COMMANDE
+Medicament1    4       1 COMMANDE
+Medicament2    3       12 COMMANDE
+
+STOCK 2013-08-27
+Médicament9 55 2018-08-07
+Médicament10 66 2017-03-23
+Médicament11 17 2018-07-25
+Médicament12 50 2015-09-09
+Médicament15 119 2014-02-26
+Médicament19 99 2019-03-31
+Médicament20 48 2016-11-17
+Médicament34 111 2017-09-04
+Médicament38 21 2015-05-15
+Médicament48 16 2014-06-03
+Médicament49 88 2013-09-01
+
+APPROV OK
+STOCK 2013-08-27
+Médicament4 109 2019-09-01
+Médicament5 9 2013-11-16
+Médicament9 56 2013-11-17
+Médicament9 55 2018-08-07
+Médicament9 56 2013-11-17
+Médicament10 66 2017-03-23
+Médicament11 17 2018-07-25
+Médicament12 50 2015-09-09
+Médicament14 53 2014-01-01
+Médicament15 119 2014-02-26
+Médicament19 99 2019-03-31
+Médicament20 48 2016-11-17
+Médicament34 111 2017-09-04
+Médicament38 21 2015-05-15
+Médicament44 19 2015-07-01
+Médicament48 16 2014-06-03
+Médicament49 88 2013-09-01
+
+APPROV OK
+STOCK 2013-08-27
+Médicament4 8 2017-10-30
+Médicament4 109 2019-09-01
+Médicament4 8 2017-10-30
+Médicament5 9 2013-11-16
+Médicament9 56 2013-11-17
+Médicament9 55 2018-08-07
+Médicament9 56 2013-11-17
+Médicament10 66 2017-03-23
+Médicament11 17 2018-07-25
+Médicament12 50 2015-09-09
+Médicament14 53 2014-01-01
+Médicament15 119 2014-02-26
+Médicament19 99 2019-03-31
+Médicament20 48 2016-11-17
+Médicament34 111 2017-09-04
+Médicament38 21 2015-05-15
+Médicament44 19 2015-07-01
+Médicament48 16 2014-06-03
+Médicament49 88 2013-09-01
+
+PRESCRIPTION 5
+Medicament23	6	10 COMMANDE
+Medicament9	30	1 OK
+
+PRESCRIPTION 6
+Medicament11	27	6 COMMANDE
+Medicament9	6	10 COMMANDE
+Medicament6	8	10 COMMANDE
+Medicament14	20	4 COMMANDE
+
+PRESCRIPTION 7
+Medicament27	17	6 COMMANDE
+Medicament41	8	5 COMMANDE
+Medicament38	1	3 OK
+
+PRESCRIPTION 8
+Medicament11	27	2 COMMANDE
+
+PRESCRIPTION 9
+Medicament49	27	5 COMMANDE
+
+STOCK 2013-08-27
+Médicament4 8 2017-10-30
+Médicament4 109 2019-09-01
+Médicament4 8 2017-10-30
+Médicament5 9 2013-11-16
+Médicament9 56 2013-11-17
+Médicament9 25 2018-08-07
+Médicament9 56 2013-11-17
+Médicament10 66 2017-03-23
+Médicament11 17 2018-07-25
+Médicament12 50 2015-09-09
+Médicament14 53 2014-01-01
+Médicament15 119 2014-02-26
+Médicament19 99 2019-03-31
+Médicament20 48 2016-11-17
+Médicament34 111 2017-09-04
+Médicament38 18 2015-05-15
+Médicament44 19 2015-07-01
+Médicament48 16 2014-06-03
+Médicament49 88 2013-09-01
+

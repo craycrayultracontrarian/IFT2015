@@ -1,0 +1,31 @@
+APPROV :
+Medicament1 120 2018-05-29 
+Medicament5 10 2018-05-27 
+;
+DATE 2017-10-26 ;
+STOCK ;
+PRESCRIPTION  :
+Medicament1    5       6 
+Medicament6    3       1 
+Medicament3    5       1 
+;
+PRESCRIPTION :
+Medicament1    3       2
+Medicament9    4       1
+Medicament2    4       1
+;
+PRESCRIPTION :
+Medicament3    2       1
+;
+PRESCRIPTION :
+Medicament8    4       1
+Medicament1    4       1
+Medicament2    3       12
+;
+STOCK ;
+DATE 2017-10-27 ;
+APPROV :
+Medicament4 8 2017-10-30
+;
+STOCK 
+;
