@@ -1,21 +1,16 @@
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Pharmacy {
     private BST medStock;
     private LocalDate currDate;
-    private ArrayList<Commande> orders = new ArrayList<>();
+    private BST orders = new BST();
 
     public Pharmacy() {
         medStock = new BST();
-    }
-
-    public ArrayList<Commande> getOrders() {
-        return orders;
     }
 
     public void writeStock(FileWriter fileWriter) throws IOException {
@@ -34,21 +29,21 @@ public class Pharmacy {
 
         writeMeds(fileWriter, node.left);
 
-        writeMedSubtree(fileWriter, node.value, node.subtree.getRoot());
+        writeMedSubtree(fileWriter, node.medName, node.subtree.getRoot());
 
         writeMeds(fileWriter, node.right);
     }
 
-    private void writeMedSubtree(FileWriter fileWriter, int medId, BST.Node node) throws IOException {
+    private void writeMedSubtree(FileWriter fileWriter, String medName, BST.Node node) throws IOException {
         if (node == null) {
             return;
         }
 
-        writeMedSubtree(fileWriter, medId ,node.left);
+        writeMedSubtree(fileWriter, medName, node.left);
 
-        fileWriter.write("Médicament" + medId + " " + node.quantity + " " + node.expirationDate + "\n");
+        fileWriter.write(medName + " " + node.quantity + " " + node.expirationDate + "\n");
 
-        writeMedSubtree(fileWriter, medId ,node.right);
+        writeMedSubtree(fileWriter, medName, node.right);
     }
 
     // Update date (up-Date hehe)
@@ -56,14 +51,12 @@ public class Pharmacy {
         currDate = newDate;
         fileWriter.write(newDate.toString());
 
-        if (orders.isEmpty()) {
+        if (orders.getRoot() == null) {
             fileWriter.write(" OK\n\n");
         } else {
             fileWriter.write( " COMMANDES :\n");
 
-            for (Commande order : orders) {
-                fileWriter.write(order.name + " " + order.amount + '\n');
-            }
+            writeOrders(orders.getRoot(), fileWriter);
 
             fileWriter.write('\n');
         }
@@ -71,6 +64,18 @@ public class Pharmacy {
 
         orders.clear();
         fileWriter.flush();
+    }
+
+    private void writeOrders(BST.Node node, FileWriter fileWriter) throws IOException {
+        if (node == null) {
+            return;
+        }
+
+        writeOrders(node.left, fileWriter);
+
+        fileWriter.write(node.medName + " " + node.subtree.getRoot().quantity + '\n');
+
+        writeOrders(node.right, fileWriter);
     }
 
     public void handleApprov(FileWriter fileWriter, BufferedReader bufferedReader) throws IOException {
@@ -81,14 +86,18 @@ public class Pharmacy {
         while ( !(line = bufferedReader.readLine()).contains(";") ){
             String[] splitLine = line.split("[ \t]+");
 
-            int value = Integer.parseInt((splitLine[0]).substring(10));
+            String medName = splitLine[0];
+            //int value = Integer.parseInt((splitLine[0]).substring(10));
             int quantity = Integer.parseInt(splitLine[1]);
             LocalDate expirationDate = LocalDate.parse(splitLine[2]);
 
-            BST.Node mainMedNode = medStock.search(value);
+            BST.Node mainMedNode = medStock.search(medName);
 
+            if ((currDate != null) && (expirationDate.isBefore(currDate) || expirationDate.isEqual(currDate))) {
+                continue;
+            }
             if (mainMedNode == null) {
-                medStock.insert(value, new BST(quantity, expirationDate));
+                medStock.insert(medName, new BST(quantity, expirationDate));
             } else {
                 mainMedNode.subtree.insert(quantity, expirationDate);
             }
@@ -106,14 +115,14 @@ public class Pharmacy {
             String[] splitLine = line.split("[ \t]+");
 
             String medName = splitLine[0];
-            int medId = Integer.parseInt(medName.substring(10));
+            //int medId = Integer.parseInt(medName.substring(10));
             int doses = Integer.parseInt(splitLine[1]);
             int reps = Integer.parseInt(splitLine[2]);
 
             int medsNeeded = doses * reps;
             LocalDate treatmentEnd = currDate.plusDays(medsNeeded);
 
-            BST.Node medNode = medStock.search(medId);
+            BST.Node medNode = medStock.search(medName);
 
             if (medNode != null) {
                 BST.Node medSubNode = findPrescriptionMed(medNode.subtree, medsNeeded, treatmentEnd);
@@ -135,18 +144,18 @@ public class Pharmacy {
         fileWriter.flush();
     }
 
-    private void addToOrder(Commande newOrder, ArrayList<Commande> orders) {
+    private void addToOrder(Commande newOrder, BST orders) {
+        BST.Node orderNode = orders.search(newOrder.name);
+
         // Check if medication has already been ordered, increase amount to order
         // if so
-        for (Commande order : orders) {
-            if (order.name.equals(newOrder.name)) {
-                order.amount += newOrder.amount;
-                return;
-            }
+        if (orderNode != null) {
+            orderNode.subtree.getRoot().quantity += newOrder.amount;
+            return;
         }
 
         // Otherwise just add the new order to list of orders
-        orders.add(newOrder);
+        orders.insert(newOrder.name, new BST(newOrder.amount, null));
     }
 
     private BST.Node findPrescriptionMed(BST subtree, int medsNeeded, LocalDate treatmentEnd) {
@@ -186,46 +195,93 @@ public class Pharmacy {
         }
 
         if (mainNode.subtree != null && mainNode.subtree.getRoot() == null) {
-            mainTree.remove(mainNode.value);
+            mainTree.remove(mainNode.medName);
         }
 
     }
 
     public void removeExpiredMedications() {
-        removeExpiredMedications(medStock.getRoot());
+        while (hasExpiredMedications()) {
+            removeExpiredMedications(medStock.getRoot());
+        }
     }
 
     private void removeExpiredMedications(BST.Node node) {
+        ArrayList<BST.Node> subNodesToRemove = new ArrayList<>();
+
         if (node == null) {
             return;
         }
 
-        // In-order traversal to ensure all nodes are checked
+        // Use post-order traversal to avoid modifying the tree during traversal
         removeExpiredMedications(node.left);
+        removeExpiredMedications(node.right);
 
         if (node.subtree != null) {
-            removeExpiredMedicationsFromSubtree(node.subtree.getRoot(), node.subtree);
+            getExpiredMedicationsFromSubtree(node.subtree.getRoot(), subNodesToRemove);
+
+            for (BST.Node nodeToRemove : subNodesToRemove) {
+                node.subtree.remove(nodeToRemove.expirationDate);
+            }
+
             if (node.subtree.getRoot() == null) {
-                medStock.remove(node.value);  // Remove main node if subtree is empty
+                medStock.remove(node.medName);
             }
         }
-
-        removeExpiredMedications(node.right);
     }
 
-    private void removeExpiredMedicationsFromSubtree(BST.Node subNode, BST subtree) {
-        if (subNode == null) {
+    private void getExpiredMedicationsFromSubtree(BST.Node node, ArrayList<BST.Node> nodesToRemove) {
+        if (node == null) {
             return;
         }
 
-        // In-order traversal to ensure all nodes are checked
-        removeExpiredMedicationsFromSubtree(subNode.left, subtree);
+        getExpiredMedicationsFromSubtree(node.left, nodesToRemove);
 
-        if (subNode.expirationDate.isBefore(currDate)) {
-            subtree.remove(subNode.expirationDate);  // Remove expired subnode
+        if (node.expirationDate.isBefore(currDate) || node.expirationDate.isEqual(currDate)) {
+            nodesToRemove.add(node);
         }
 
-        removeExpiredMedicationsFromSubtree(subNode.right, subtree);
+        getExpiredMedicationsFromSubtree(node.right, nodesToRemove);
     }
 
+    public boolean hasExpiredMedications() {
+        return checkExpiredMedications(medStock.getRoot());
+    }
+
+    private boolean checkExpiredMedications(BST.Node node) {
+        if (node == null) {
+            return false;
+        }
+
+        // Use in-order traversal to check nodes
+        if (checkExpiredMedications(node.left)) {
+            return true;
+        }
+
+        if (node.subtree != null) {
+            if (checkExpiredMedicationsInSubtree(node.subtree.getRoot())) {
+                return true;
+            }
+        } else if (node.expirationDate != null && node.expirationDate.isBefore(currDate)) {
+            return true;
+        }
+
+        return checkExpiredMedications(node.right);
+    }
+
+    private boolean checkExpiredMedicationsInSubtree(BST.Node subNode) {
+        if (subNode == null) {
+            return false;
+        }
+
+        if (checkExpiredMedicationsInSubtree(subNode.left)) {
+            return true;
+        }
+
+        if (subNode.expirationDate.isBefore(currDate)) {
+            return true;
+        }
+
+        return checkExpiredMedicationsInSubtree(subNode.right);
+    }
 }

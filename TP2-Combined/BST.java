@@ -5,9 +5,7 @@ import static java.lang.Math.max;
 public class BST {
     private Node root;
 
-    public BST() {
-
-    }
+    public BST() {}
 
     public BST(int quantity, LocalDate expirationDate) {
         root = new Node(quantity, expirationDate);
@@ -22,7 +20,7 @@ public class BST {
         int height;
 
         // For main tree
-        int value;
+        String medName;
         BST subtree;
 
         // For sub-tree
@@ -30,8 +28,8 @@ public class BST {
         LocalDate expirationDate;
 
         // Constructor for main tree node
-        public Node(int value, BST subtree) {
-            this.value = value;
+        public Node(String medName, BST subtree) {
+            this.medName = medName;
             this.subtree = subtree;
         }
 
@@ -111,13 +109,13 @@ public class BST {
     }
 
     // For main tree
-    private Node unbalancedInsert(int value, BST subtree, Node node) {
+    private Node unbalancedInsert(String medName, BST subtree, Node node) {
         if (node == null) {
-            node = new Node(value, subtree);
-        } else if (value < node.value) {
-            node.left = insert(value, subtree, node.left);
-        } else if (value > node.value) {
-            node.right = insert(value, subtree, node.right);
+            node = new Node(medName, subtree);
+        } else if (medName.compareTo(node.medName) < 0) {
+            node.left = insert(medName, subtree, node.left);
+        } else if (medName.compareTo(node.medName) > 0) {
+            node.right = insert(medName, subtree, node.right);
         }
 
         return node;
@@ -138,13 +136,13 @@ public class BST {
         return node;
     }
 
-    public void insert(int value, BST subtree) {
-        root = insert(value, subtree, root);
+    public void insert(String medName, BST subtree) {
+        root = insert(medName, subtree, root);
     }
 
     // Insertion in main tree (!!!make sure the value isn't already in the tree!!!!)
-    public Node insert(int value, BST subtree, Node node) {
-        node = unbalancedInsert(value, subtree, node);
+    public Node insert(String medName, BST subtree, Node node) {
+        node = unbalancedInsert(medName, subtree, node);
 
         updateHeight(node);
 
@@ -165,17 +163,17 @@ public class BST {
     }
 
     // For main tree
-    private Node unbalancedDeleteNode(int value, Node node) {
+    private Node unbalancedDeleteNode(String medName, Node node) {
         // No node at current position --> go up the recursion
         if (node == null) {
             return null;
         }
 
         // Traverse the tree to the left or right depending on the key
-        if (value < node.value) {
-            node.left = unbalancedDeleteNode(value, node.left);
-        } else if (value > node.value) {
-            node.right = unbalancedDeleteNode(value, node.right);
+        if (medName.compareTo(node.medName) < 0) {
+            node.left = unbalancedDeleteNode(medName, node.left);
+        } else if (medName.compareTo(node.medName) > 0) {
+            node.right = unbalancedDeleteNode(medName, node.right);
         }
 
         // At this point, "node" is the node to be deleted
@@ -237,12 +235,16 @@ public class BST {
     }
 
     // For main tree
-    public void remove(int value) {
-        root = remove(value, root);
+    public void remove(String medName) {
+        root = remove(medName, root);
     }
 
-    private Node remove(int value, Node node) {
-        node = unbalancedDeleteNode(value, node);
+    private Node remove(String medName, Node node) {
+        node = unbalancedDeleteNode(medName, node);
+
+        if (node == null) {
+            return null;
+        }
 
         updateHeight(node);
 
@@ -271,14 +273,14 @@ public class BST {
         Node inOrderSuccessor = findMinimum(node.right);
 
         // Copy inorder successor's data to current node
-        node.value = inOrderSuccessor.value;
+        node.medName = inOrderSuccessor.medName;
         node.subtree = inOrderSuccessor.subtree;
         node.quantity = inOrderSuccessor.quantity;
         node.expirationDate = inOrderSuccessor.expirationDate;
 
         // Delete inorder successor recursively
         if (node.subtree != null) {
-            node.right = unbalancedDeleteNode(inOrderSuccessor.value, node.right);
+            node.right = unbalancedDeleteNode(inOrderSuccessor.medName, node.right);
         } else {
             node.right = unbalancedDeleteNode(inOrderSuccessor.expirationDate, node.right);
         }
@@ -291,19 +293,19 @@ public class BST {
         return node;
     }
 
-    public Node search(int value) {
-        return search(value, root);
+    public Node search(String medName) {
+        return search(medName, root);
     }
 
-    public Node search(int value, Node node) {
+    public Node search(String medName, Node node) {
         if (node == null) {
             return null;
         }
 
-        if (value < node.value) {
-            return search(value, node.left);
-        } else if (value > node.value) {
-            return search(value, node.right);
+        if (medName.compareTo(node.medName) < 0) {
+            return search(medName, node.left);
+        } else if (medName.compareTo(node.medName) > 0) {
+            return search(medName, node.right);
         } else {
             return node;
         }
@@ -321,7 +323,7 @@ public class BST {
         printTreeInOrder(node.left);
 
         if (node.subtree != null) {
-            System.out.println("Medicament" + node.value);
+            System.out.println(node.medName);
             printTreeInOrder(node.subtree.root);
         } else {
             System.out.println("Stock: " + node.quantity);
@@ -330,4 +332,41 @@ public class BST {
 
         printTreeInOrder(node.right);
     }
+
+    public void clear() {
+        clear(root);
+        root = null;  // Set root to null after clearing all nodes
+    }
+
+    private void clear(BST.Node node) {
+        if (node == null) {
+            return;
+        }
+
+        // Post-order traversal to ensure all nodes are removed
+        clear(node.left);
+        clear(node.right);
+
+        // Clear the subtree if it exists
+        if (node.subtree != null) {
+            node.subtree.clear();  // Clear the subtree
+        }
+
+        // After clearing children and subtree, remove this node
+        node = null;
+    }
+
+    /*
+    public void clear(BST.Node node) {
+        if (node == null) {
+            return;
+        }
+
+        // In-order traversal to ensure all nodes are checked
+        clear(node.left);
+
+        remove(node.medName);  // Remove main node if subtree is empty
+
+        clear(node.right);
+    } */
 }
