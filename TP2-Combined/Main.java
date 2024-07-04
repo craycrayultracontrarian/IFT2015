@@ -10,7 +10,6 @@ public class Main {
         throw new IllegalArgumentException("2 arguments required: Main [input file] [output file]");
     }
 
-
 	Pharmacy pharmacy = new Pharmacy();
 
     String inputFileName = args[0];

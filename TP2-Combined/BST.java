@@ -1,6 +1,8 @@
 import java.time.LocalDate;
-
 import static java.lang.Math.max;
+
+// AVL tree implementation based on this source: 
+// https://www.happycoders.eu/algorithms/avl-tree-java/
 
 public class BST {
     private Node root;
