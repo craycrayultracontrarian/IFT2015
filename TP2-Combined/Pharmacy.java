@@ -154,14 +154,14 @@ public class Pharmacy {
                 // OK to file
                 if (medSubNode != null){
                     subtractStock(medStock, medNode.subtree, medNode, medSubNode, medsNeeded);
-                    fileWriter.write(medName + " " + doses + " " + reps + " OK\n");
+                    fileWriter.write(medName + " " + doses + " " + reps + "  OK\n");
                 } else{ // Otherwise add it to the order and write COMMANDE to file
                     addToOrder(new Commande(medName, medsNeeded), orders);
-                    fileWriter.write(medName + " " + doses + " " + reps + " COMMANDE\n");
+                    fileWriter.write(medName + " " + doses + " " + reps + "  COMMANDE\n");
                 }
             } else {
                 addToOrder(new Commande(medName, medsNeeded), orders);
-                fileWriter.write(medName + " " + doses + " " + reps + " COMMANDE\n");
+                fileWriter.write(medName + " " + doses + " " + reps + "  COMMANDE\n");
             }
         }
 
