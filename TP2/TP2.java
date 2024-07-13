@@ -62,12 +62,48 @@ public class TP2 {
                     bw.write(splitLine + "COMMANDE" + "\n");
                     continue;
                 }
-                else if (bstInstance.search(value).experiationDate < expDateNeeded) {
-                    // if the exp dates available, in the quantity available are before the needed date, write commande
+
+
+
+
+                // check if it has any expiration dates that are after the needed date 
+                // maybe I should print the validated exp dates and their quantities? And then if there is one with enough quantity take from that one? 
+                // the logic of the examples lead us to believe that we should take all the quantity from the same exp date, even though it isn't intuitively the most efficient way.
+                
+                // while exp dates are after needed exp date, check if the quantity is enough
+                while (bstInstance.search(value).expirationDate.isAfter(expDateNeeded) || bstInstance.search(value).expirationDate.isEqual(expDateNeeded)) {
+                    // if the subtree node currently being analyzed has enough quantity, take from it and break the loop (it should also be the one expiring the soonest greater than the needed date)
+                    // maybe store it as a candidate and then take from the soonest time at the end of the loop? 
+                    // if the subtree node currently being analyzed does not have enough quantity, ignore it and continue to the next node
+                }
+
+
+
+                // else write commande and add to commande array
+
+               
+                    // return all exp dates that are after the needed date with their quantities attached
+                    for (BST.Node node : bstInstance.something(bstInstance.search(value).subtree.getRoot())) {
+                        if (node.expirationDate.isAfter(expDateNeeded) || node.expirationDate.isEqual(expDateNeeded)) {
+                            bw.write("Médicament" + value + " " + node.quantity + " " + node.expirationDate + "\n");
+                        }
+                    }
+                    
                     bw.write(splitLine + "COMMANDE" + "\n");
                     continue;
-                }
+                
+
+                // if the exp dates available, in the quantity available are before the needed date, write commande'
+
+
+                // temp tree = bstInstance.removeBeforeExp(expDateNeeded);
+                // print the temp tree for only the medication we want
+                // check quantity and make adjustments
+
+
+
                 else {
+                    // need a function that will take away the medication from the existing stock
                     bstInstance.remove(value, quantity, expDateNeeded);
                     bw.write(splitLine + "OK" + "\n");
                 }
