@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ab5954ae-b9b8-4626-8d59-93bc7877208c" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2gYd90xThS2u56y3cZA1yyvzwqt" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Application.input0.executor": "Run",
+    "Application.input1.executor": "Run",
+    "Application.input14.executor": "Run",
+    "Application.input2.executor": "Run",
+    "Application.input3.executor": "Run",
+    "Application.input4.executor": "Run",
+    "Application.input5.executor": "Run",
+    "Application.timeTest.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/qumquat/uni/E24/2015/devoir1repo/tp12015",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="Application.input0">
+    <configuration name="customCase" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="tp12015" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="input14" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="tp12015" />
+      <option name="PROGRAM_PARAMETERS" value="testFiles/test14.txt res14.txt" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="timeTest" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Test" />
+      <module name="tp12015" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.timeTest" />
+      <item itemvalue="Application.input0" />
+      <item itemvalue="Application.input14" />
+      <item itemvalue="Application.input1" />
+      <item itemvalue="Application.input2" />
+      <item itemvalue="Application.input3" />
+      <item itemvalue="Application.input4" />
+      <item itemvalue="Application.input5" />
+      <item itemvalue="Application.customCase" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ab5954ae-b9b8-4626-8d59-93bc7877208c" name="Changes" comment="" />
+      <created>1715878292330</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1715878292330</updated>
+      <workItem from="1715878293380" duration="4020000" />
+      <workItem from="1716303574299" duration="528000" />
+      <workItem from="1716398827886" duration="6674000" />
+      <workItem from="1716411365354" duration="7513000" />
+      <workItem from="1717007542929" duration="9941000" />
+      <workItem from="1717019412974" duration="325000" />
+      <workItem from="1717087101374" duration="6172000" />
+      <workItem from="1717261612339" duration="4769000" />
+      <workItem from="1717293571184" duration="18000" />
+      <workItem from="1717614823833" duration="121000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
