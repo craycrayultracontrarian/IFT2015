@@ -1,0 +1,37 @@
+s1 
+s2
+s3 
+s4
+s5 
+s6
+s7
+s8
+s9
+s10
+s11
+s12
+---
+rue0 : s1 s2 6 ;
+rue0 : s1 s5 5 ;
+rue1 : s2 s3 15 ;
+rue1 : s2 s5 8 ;
+rue1 : s2 s4 18 ;
+rue1 : s3 s4 8 ;
+rue1 : s3 s8 18 ;
+rue8 : s3 s9 6 ;
+rue1 : s4 s6 10 ;
+rue1 : s4 s11 17 ;
+rue1 : s7 s4 7 ;
+rue1 : s5 s6 15 ;
+rue1 : s5 s7 9 ;
+rue1 : s11 s6 3 ;
+rue2 : s7 s8 9 ;
+rue3 : s7 s9 4 ;
+rue3 : s7 s10 13 ;
+rue3 : s7 s11 12;
+rue3 : s8 s9 14;
+rue3 : s8 s12 5;
+rue4 : s9 s10 19 ;
+rue4 : s12 s10 2 ;
+rue5 : s12 s11 7 ;
+---
